@@ -109,11 +109,8 @@ page 58701 "Copilot Prompt Test"
                 Enabled = UserPromptText <> '';
 
                 trigger OnAction()
-                var
-                    HtmlViewer: Page "Html Viewer";
                 begin
-                    HtmlViewer.SetContent(UserPromptText);
-                    HtmlViewer.RunModal();
+                    Message(UserPromptText);
                 end;
             }
             action(ViewSystemPrompt)
@@ -123,11 +120,8 @@ page 58701 "Copilot Prompt Test"
                 Enabled = SystemPromptText <> '';
 
                 trigger OnAction()
-                var
-                    HtmlViewer: Page "Html Viewer";
                 begin
-                    HtmlViewer.SetContent(SystemPromptText);
-                    HtmlViewer.RunModal();
+                    Message(SystemPromptText);
                 end;
             }
             action(ShowResult)
@@ -137,11 +131,8 @@ page 58701 "Copilot Prompt Test"
                 Enabled = ResultText <> '';
 
                 trigger OnAction()
-                var
-                    HtmlViewer: Page "Html Viewer";
                 begin
-                    HtmlViewer.SetContent(ResultText);
-                    HtmlViewer.RunModal();
+                    Message(ResultText);
                 end;
             }
             action(GetFromHistory)

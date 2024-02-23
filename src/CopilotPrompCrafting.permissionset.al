@@ -12,7 +12,6 @@ permissionset 58700 CopilotPrompCrafting
         codeunit "Secrets And Capabilities Setup" = X,
         page "Copilot Prompt Test" = X,
         page "Description Prompt" = X,
-        page "Html Viewer" = X,
         page "Prompt History" = X,
         page "Prompt History List" = X;
 }
