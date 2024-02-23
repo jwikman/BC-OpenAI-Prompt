@@ -73,11 +73,6 @@ page 58701 "Copilot Prompt Test"
                     Editable = false;
                 }
             }
-            group(OptionsGrp)
-            {
-                Caption = 'Options';
-                // TODO: Add setting for Temperature
-            }
         }
     }
     actions
@@ -171,6 +166,12 @@ page 58701 "Copilot Prompt Test"
                 Image = History;
                 RunObject = Page "Prompt History List";
             }
+            action(Settings)
+            {
+                Caption = 'Settings';
+                Image = Setup;
+                RunObject = Page "Copilot Prompt Crafting Setup";
+            }
         }
         area(Promoted)
         {
@@ -196,6 +197,9 @@ page 58701 "Copilot Prompt Test"
                 actionref(GetFromHistory_Promoted; GetFromHistory)
                 {
                 }
+                actionref(Settings_Promoted; Settings)
+                {
+                }
             }
         }
     }
@@ -207,10 +211,13 @@ page 58701 "Copilot Prompt Test"
 
     local procedure RunGeneration()
     var
+        IsolatedStorageWrapper: Codeunit "Isolated Storage Wrapper";
         GeneratePromptResult: Codeunit "Generate Prompt Result";
         ProgressDialog: Dialog;
         Attempts: Integer;
     begin
+        if not IsolatedStorageWrapper.IsConfigured() then
+            ShowConfiguration();
         ResultText := '';
         ProgressDialog.Open(GeneratingTextDialogTxt);
         GeneratePromptResult.SetPrompts(SystemPromptText, UserPromptText);
@@ -230,16 +237,28 @@ page 58701 "Copilot Prompt Test"
             Error(SomethingWentWrongWithLatestErr, GetLastErrorText());
     end;
 
+    local procedure ShowConfiguration()
+    var
+        ConfigureQst: Label 'It seems as this is the first time you are using the Copilot Prompt Crafting extension. Do you want to configure the extension now?';
+        ConfigureErr: Label 'The Copilot Prompt Crafting extension is not configured. Please configure the extension to use it.';
+    begin
+        if Confirm(ConfigureQst) then begin
+            Page.Run(Page::"Copilot Prompt Crafting Setup");
+            Error('');
+        end else
+            Error(ConfigureErr);
+    end;
+
     local procedure UpdateTotalTokenCount()
     var
-        SimplifiedCopilotChat: Codeunit "Simplified Copilot Chat";
+        SimplifiedCopilotChat: Codeunit "Copilot Chat Mgt.";
     begin
         TotalTokenCount := SimplifiedCopilotChat.PreciseTokenCount(UserPromptText + SystemPromptText + ResultText);
     end;
 
     local procedure UpdateTokenCount()
     var
-        SimplifiedCopilotChat: Codeunit "Simplified Copilot Chat";
+        SimplifiedCopilotChat: Codeunit "Copilot Chat Mgt.";
     begin
         Clear(ResultText);
         Clear(TotalTokenCount);

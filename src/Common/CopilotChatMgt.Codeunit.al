@@ -3,7 +3,7 @@ namespace CopilotPromptCrafting.Common;
 using System.AI;
 using System.RestClient;
 
-codeunit 58703 "Simplified Copilot Chat"
+codeunit 58703 "Copilot Chat Mgt."
 {
     procedure Chat(SystemPrompt: Text; UserPrompt: Text): Text
     var
@@ -14,12 +14,11 @@ codeunit 58703 "Simplified Copilot Chat"
         IsolatedStorageWrapper: Codeunit "Isolated Storage Wrapper";
         Result: Text;
     begin
-        AzureOpenAI.SetAuthorization(Enum::"AOAI Model Type"::"Chat Completions", IsolatedStorageWrapper.GetEndpoint(), IsolatedStorageWrapper.GetDeployment(), IsolatedStorageWrapper.GetSecretKey());
+        IsolatedStorageWrapper.SetAuthorization(Enum::"AOAI Model Type"::"Chat Completions", AzureOpenAI);
 
         AzureOpenAI.SetCopilotCapability(Enum::"Copilot Capability"::"Test AOAI Prompts");
 
-        AOAIChatCompletionParams.SetMaxTokens(2500);
-        AOAIChatCompletionParams.SetTemperature(0); // TODO: Let user select temperature
+        AOAIChatCompletionParams.SetTemperature(0); // We do not want randomness in the response
 
 
         AOAIChatMessages.AddSystemMessage(SystemPrompt);

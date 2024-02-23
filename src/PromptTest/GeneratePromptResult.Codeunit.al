@@ -22,7 +22,7 @@ codeunit 58704 "Generate Prompt Result"
 
     local procedure GenerateProposal()
     var
-        SimplifiedCopilotChat: Codeunit "Simplified Copilot Chat";
+        SimplifiedCopilotChat: Codeunit "Copilot Chat Mgt.";
     begin
         ResultTxt := SimplifiedCopilotChat.Chat(SystemPrompt, UserPrompt);
     end;
